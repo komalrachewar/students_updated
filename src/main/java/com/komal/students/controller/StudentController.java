@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import java.security.Principal;
 
 import java.util.Optional;
 
@@ -24,13 +25,13 @@ public class StudentController {
     @Autowired
     Courses courses;
 
-    @RequestMapping("/list")
+    @GetMapping("/list")
     public String getStudentList(Model model) {
         model.addAttribute("students", studentService.getAllData());
         return "studentList";
     }
 
-    @RequestMapping("/addStudent")
+    @GetMapping("/addStudent")
     public String addStudent(Model model) {
         Student student = new Student();
         model.addAttribute("countries", countries.getCountries());
@@ -45,10 +46,10 @@ public class StudentController {
         studentService.saveData(student);
         model.addAttribute("message", "Student added successfully");
         model.addAttribute("alertClass", "alert-success");
-        return "redirect:/list";
+        return "redirect:/student/list";
     }
 
-    @RequestMapping("/updateStudent/{id}")
+    @GetMapping("/updateStudent/{id}")
     public String updateStudent(@PathVariable("id") Long id, Model model) {
         Optional<Student> studentOPtional = studentService.getById(id);
         Student student = studentOPtional.orElse(new Student());
@@ -63,6 +64,19 @@ public class StudentController {
     public String deleteStudent(@PathVariable("id") Long id, Model model){
         studentService.deleteById(id);
         model.addAttribute("message", "Student Deleted");
-        return "redirect:/list";
+        return "redirect:/student/list";
+    }
+
+    @RequestMapping(value = "/403")
+    public String accesssDenied(Principal user, Model model) {
+        if (user != null) {
+            model.addAttribute("msg", "Hi " + user.getName()
+                    + ", you do not have permission to access this page!");
+        } else {
+            model.addAttribute("msg",
+                    "You do not have permission to access this page!");
+        }
+        return "403";
+
     }
 }

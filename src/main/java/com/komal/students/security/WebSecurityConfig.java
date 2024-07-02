@@ -43,17 +43,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http.csrf().disable();
-        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
-                .antMatchers("/student/list", "/student/addStudent", "/student/saveStudent", "/student/403").hasAnyAuthority("USER", "ADMIN")
-                .antMatchers( "/student/updateStudent", "/student/deleteStudent" ).hasAuthority("ADMIN")
+        http.authorizeRequests()
+                .antMatchers("/student/list", "/student/addStudent", "/student/saveStudent").hasAnyAuthority("ADMIN", "USER")
+                .antMatchers( "/student/updateStudent/{id}", "/student/deleteStudent/{id}" ).hasAuthority("ADMIN")
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().loginProcessingUrl("/login").successForwardUrl("/student/list").permitAll()
+                .formLogin().loginProcessingUrl("/login").defaultSuccessUrl("/student/list").permitAll()
                 .and().logout().logoutSuccessUrl("/login").permitAll()
                 .and().exceptionHandling().accessDeniedPage("/student/403")
                 .and().cors()
                 .and().csrf().disable();
-//                .and().cors().and().csrf();
-    }
+   }
 }

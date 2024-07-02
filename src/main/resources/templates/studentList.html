@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Student List</title>
@@ -9,9 +9,12 @@
 <section class="container">
     <nav class="navbar bg-dark border-bottom border-body" data-bs-theme="dark">
         <div class="container-fluid">
-            <a class="navbar-brand" th:href="@{/student}">Student Management System</a>
-            <a th:href="@{/student/addStudent}" class="navbar-brand btn btn-primary" aria-current="page"
+            <a class="navbar-brand" th:href="@{/student/list}">Student Management System</a>
+            <a style="margin-left: 365px;" th:href="@{/student/addStudent}" class="navbar-brand btn btn-success" aria-current="page"
             >Add Student</a
+            >
+            <a th:href="@{/logout}" class="navbar-brand btn btn-primary" aria-current="page"
+            >Logout</a
             >
         </div>
     </nav>
